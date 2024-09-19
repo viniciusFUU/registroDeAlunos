@@ -1,5 +1,3 @@
-
-
 public class AlunoController {
     private Aluno[] listaDeAlunos;
     int posicaoInserir = 0;
@@ -8,9 +6,9 @@ public class AlunoController {
         listaDeAlunos = new Aluno[quantidade];
     }
     
-    public void addAluno(String nome, int matricula){
+    public void addAluno(String nome, int matricula, String curso, Prova[] provas){
         aumentarCapacidadeLista();
-        Aluno aluno = new Aluno(nome, matricula);
+        Aluno aluno = new Aluno(nome, matricula, curso, provas);
         
         if (existMatricula(matricula) == false){
             if(listaDeAlunos[posicaoInserir] == null){
@@ -73,6 +71,14 @@ public class AlunoController {
         return false;
     }
 
+    public void updateAluno(String nome, int matricula){
+        for (Aluno aluno : listaDeAlunos){
+            if (aluno != null && aluno.getMatricula() == matricula){
+                aluno.setNome(nome);
+            }
+        }
+    }
+
     public void showAlunos(){
         Aluno[] listaParaPercorrer = listaDeAlunos;
 
@@ -85,10 +91,22 @@ public class AlunoController {
 
     public static void main(String[] args) {
         AlunoController aluno = new AlunoController(2);
-        aluno.addAluno("Vinicius", 1);
+        Prova[] prova1 = {
+            new Prova(8.3),
+            new Prova(7.5),
+            new Prova(9.2),
+            new Prova(7)
+        };
+
+        ProvaController provaController = new ProvaController();
+        System.out.println("Média :" + provaController.calcularMediaPonderada(prova1));
+
+        aluno.addAluno("Vinicius", 1, "banco de dados", prova1);
+        aluno.addAluno("Vinicius", 1, "banco de dados", prova1);
+        aluno.addAluno("Bianca", 2, "banco de dados", prova1);
+        aluno.addAluno("Bianca", 2, "banco de dados", prova1);
         aluno.showAlunos();
-        aluno.addAluno("Bianca", 1);
-        aluno.addAluno("Bianca", 2);
+        aluno.updateAluno("Vinição", 1);
         aluno.showAlunos();
     }
 }
